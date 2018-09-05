@@ -4,9 +4,19 @@
         <title>Rock Paper Scissors</title>
     </head>
     <body>
+      
+      <div id = "buttons" align = "center">
+        <button type = "button" id = "rock">Rock</button>
+        <button type = "button" id = "paper">Paper</button>
+        <button type = "button" id = "scissors">Scissors</button>
+      </div>
+      <div id = "roundSection" align = "left"></div>
+      <div id = "resultSection" align = "left"></div>
+      
         <script>
           let playerScore = 0;
           let computerScore = 0;
+          let round = 1;        
 
           function computerPlay(){
             let num = Math.floor(Math.random() * (3 - 0));
@@ -28,7 +38,9 @@
 
             if(pSelection == 'Rock' && computerSelection == 'Scissors'){
               output = 'You win! Rock beats Scissors!';
+
               playerScore++;
+              
             } else if(pSelection == 'Scissors' && computerSelection == 'Paper'){
               output = 'You win! Scissors beats Paper!';
               playerScore++;
@@ -47,23 +59,51 @@
             return output;
           }
 
-          function game(){
-            for(let i = 0; i <= 4; i++){
-              let playerSelection = prompt('Rock, Paper, or Scissors?');
-              console.log(playRound(playerSelection, computerPlay()));
-            }
-            console.log('----------Scores---------');
-            console.log('You: ' + playerScore + ' Computer: ' + computerScore);
-            if(playerScore < computerScore){
-              console.log('You lost');
-            } else if(playerScore > computerScore){
-              console.log('You won!');
-            } else {
-              console.log('You tied');
-            }
+          function game(playerSelection){
+            const roundSection = document.querySelector('#roundSection');
+            let playMessage = document.createElement('p');          
+            playMessage.textContent =  round + ". " + playRound(playerSelection, computerPlay());
+            roundSection.appendChild(playMessage);
+            round++;
+            
+            const container = document.querySelector('#resultSection');
+            if(playerScore == 5 || computerScore == 5){
+              const message = document.createElement("p");
+              const scoreMessage = document.createElement("p");
+              const resultMessage = document.createElement("p");
+              message.textContent = '----------Scores---------';
+              resultSection.appendChild(message);
+              scoreMessage.textContent ='You: ' + playerScore + ' Computer: ' + computerScore;
+              resultSection.appendChild(scoreMessage);
+              if(playerScore < computerScore){
+                resultMessage.textContent ='You lost';
+              } else if(playerScore > computerScore){
+                resultMessage.textContent ='You won!';
+              } else {
+                resultMessage.textContent ='You tied';
+              }
+              resultSection.appendChild(resultMessage);
+
+            }      
           }
 
-          
+          function playRock(){
+            game("Rock");
+          }
+          function playPaper(){
+            game("Paper");
+          }
+          function playScissors(){
+            game("Scissors");
+          }
+
+          const buttons = document.querySelectorAll('button');
+
+          buttons.forEach((button) => { 
+            button.addEventListener('click', (e) => {
+              game(button.id);
+            });
+          });        
         </script>
     </body>
 </html>
